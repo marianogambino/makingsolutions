@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<project name="helloWorld" default="ear" basedir=".">
+
+	<property name="src" value="${basedir}/src"/>
+	<property name="exe" value="${basedir}/classes"/>
+	<property name="jar" value="${basedir}/jar" />
+	<property name="ear" value="${basedir}/ear" />
+	<property name="lib" value="${basedir}/lib" />
+
+	<path id="build.class.path">
+      	<fileset dir="${lib}">
+      		<include name="**/*.jar"/>
+		</fileset>		    
+	</path>
+	
+	<!-- Fin Classpath -->
+
+	<target name="jar">
+		<mkdir dir="${jar}"/>
+		<jar destfile="${jar}/sessionAB.jar"
+				basedir="${exe}"/>
+	</target>
+
+	<target name="compile" >
+		<mkdir dir="${exe}"/>
+		<javac srcdir="${src}"
+					destdir="${exe}">
+			<classpath refid="build.class.path"/>
+		</javac>
+	 	<copy todir="${exe}/META-INF">
+			<fileset dir="META-INF">
+				<exclude name="application.xml" />
+			</fileset>
+	  	</copy>
+	</target>
+	
+	<target name="ear" depends="compile, jar">
+		<mkdir dir="${ear}"/>
+		<ear destfile="${ear}/sessionAB.ear" appxml="${basedir}/META-INF/application.xml">
+	      <fileset dir="${jar}" includes="*.jar,*.war"/>
+	    </ear>
+	</target>
+
+</project>
