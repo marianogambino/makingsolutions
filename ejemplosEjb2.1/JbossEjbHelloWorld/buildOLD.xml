@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+
+<!DOCTYPE project>
+<project name="coins" default="hello" basedir=".">
+	<description></description>
+
+	<property name="raiz" value="D:\projects\EjbCurso\JbossEjbHelloWorld\" />
+	<property name="src" value="src"/>
+	<property name="exe" value="${raiz}/classes"/>
+	<property name="jar" value="${raiz}/jar" />
+	<property name="lib" value="${raiz}/lib/ejb-2_1-api.jar" />
+
+	
+
+	<!-- Fin Librerias externas -->
+
+	<!-- Classpath -->
+	<property name="library" value="
+		${lib}/${pv}
+	"/>
+
+	<property name="library_crm" value="
+		${library};
+		${lib}/${coinsSinCrm}
+	"/>
+
+	<!-- Fin Classpath -->
+
+	<target name="jar" >
+		<mkdir dir="${jar}"/>
+		<jar	destfile="${jar}/helloWorld.jar"
+				basedir="${exe}"/>
+	</target>
+
+
+	<target name="compile" >
+		<mkdir dir="${exe}"/>
+		<javac	srcdir="${src}"
+				destdir="${exe}"
+				classpath="${lib}"/>
+	  <copy todir="${exe}/META-INF">
+			<fileset dir="META-INF">
+				<exclude name="**/application.xml" />
+				<exclude name="**/*.bak" />
+			</fileset>
+	  </copy>
+	</target>
+	
+	<target name="ear" >
+		 <ear destfile="${jar}/helloWorld.ear" appxml="${raiz}/META-INF/application.xml">
+		<fileset dir="${jar}" includes="*.jar,*.war"/>
+		</ear>
+	</target>
+
+</project>
